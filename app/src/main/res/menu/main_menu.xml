@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/itemInicio"
+        android:title="Inicio de Aplicación"/>
+    <item
+        android:id="@+id/itemMantenimiento"
+        android:title="Mantenimiento de Aplicación">
+        <menu>
+            <group>
+                <item
+                    android:id="@+id/itemRegistrar"
+                    android:title="Registrar Paciente"/>
+                <item
+                    android:id="@+id/itemActualizar"
+                    android:title="Actualizar Paciente" />
+                <item
+                    android:id="@+id/itemEliminar"
+                    android:title="Eliminar Paciente"/>
+                <item
+                    android:id="@+id/itemListar"
+                    android:title="Listar Pacientes"/>
+            </group>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/itemCita"
+        android:title="Agendar Cita"/>
+    <item
+        android:id="@+id/itemSalir"
+        android:title="Salir de la Aplicación"/>
+</menu>
