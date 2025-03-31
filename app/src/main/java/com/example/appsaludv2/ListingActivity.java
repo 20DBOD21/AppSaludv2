@@ -13,6 +13,8 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.example.appsaludv2.Adapters.PacienteAdapter;
 
+import DataAccess.DAOPaciente;
+
 public class ListingActivity extends AppCompatActivity {
 
     private LayoutInflater layoutInflater;
@@ -34,12 +36,14 @@ public class ListingActivity extends AppCompatActivity {
     }
 
     private void listado(ListView lvListado) {
-        if (EntryActivity.listaPacientes.isEmpty()) {
+        DAOPaciente daoPaciente = new DAOPaciente();
+        daoPaciente.Cargar(this);
+
+        if (daoPaciente.getSize() < 0) {
             aviso();
             return;
         }
-
-        lvListado.setAdapter(new PacienteAdapter(EntryActivity.listaPacientes, getApplicationContext()));
+        lvListado.setAdapter(new PacienteAdapter(daoPaciente, getApplicationContext()));
     }
 
     private void aviso() {

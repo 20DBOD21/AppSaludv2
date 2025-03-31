@@ -7,13 +7,13 @@ public class Paciente extends Persona{
     private String dni;
     private double peso;
     private double altura;
-    private Uri foto;
+    private byte[] foto;
 
     public Paciente() {
         super();
     }
 
-    public Paciente(String nombres, String apellidos, String genero, int edad, String ciudad, String dni, double peso, double altura, Uri foto) {
+    public Paciente(String nombres, String apellidos, String genero, int edad, String ciudad, String dni, double peso, double altura, byte[] foto) {
         super(nombres, apellidos, genero, edad);
         this.ciudad = ciudad;
         this.dni = dni;
@@ -54,11 +54,11 @@ public class Paciente extends Persona{
         this.altura = altura;
     }
 
-    public Uri getFoto() {
+    public byte[] getFoto() {
         return foto;
     }
 
-    public void setFoto(Uri foto) {
+    public void setFoto(byte[] foto) {
         this.foto = foto;
     }
 

@@ -26,6 +26,20 @@
         android:id="@+id/itemCita"
         android:title="Agendar Cita"/>
     <item
+        android:id="@+id/itemContactar"
+        android:title="Contactar">
+        <menu>
+            <group>
+                <item
+                    android:id="@+id/itemLLamada"
+                    android:title="LLamar"/>
+                <item
+                    android:id="@+id/itemListaLLamadas"
+                    android:title="Listar LLamadas"/>
+            </group>
+        </menu>
+    </item>
+    <item
         android:id="@+id/itemSalir"
         android:title="Salir de la Aplicación"/>
 </menu>

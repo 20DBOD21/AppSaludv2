@@ -1,6 +1,8 @@
 package com.example.appsaludv2.Adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,22 +14,24 @@ import com.example.appsaludv2.R;
 
 import java.util.List;
 
+import DataAccess.DAOPaciente;
 import Models.Paciente;
 
 public class PacienteAdapter extends BaseAdapter {
-    private List<Paciente> listAdapterPacientes;
+    //private List<Paciente> listAdapterPacientes;
+    private DAOPaciente daoPaciente;
     private Context context;
     private LayoutInflater layoutInflater;
 
-    public PacienteAdapter(List<Paciente> listAdapterPacientes, Context context) {
-        this.listAdapterPacientes = listAdapterPacientes;
+    public PacienteAdapter(DAOPaciente daoPaciente, Context context) {
+        this.daoPaciente = daoPaciente;
         this.context = context;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public int getCount() {
-        return listAdapterPacientes.size();
+        return daoPaciente.getSize();
     }
 
     @Override
@@ -51,15 +55,20 @@ public class PacienteAdapter extends BaseAdapter {
         ImageView ivPacientSex = viewPaciente.findViewById(R.id.ivPacientSex);
         TextView tvPacientCity = viewPaciente.findViewById(R.id.tvPacientCity);
 
-        Paciente pacienteView = listAdapterPacientes.get(position);
+        Paciente pacienteView = daoPaciente.getPaciente(position);
 
-        ivPacientIcon.setImageURI(pacienteView.getFoto());
+        //ivPacientIcon.setImageURI(pacienteView.getFoto());
+        ivPacientIcon.setImageBitmap(bitmapConvert(pacienteView.getFoto()));
         tvNames.setText(pacienteView.nombreCompleto());
         tvWeight.setText(pacienteView.pesoPersona());
         tvAge.setText(pacienteView.edadPersona());
         ivPacientSex.setImageResource(pacienteView.getGenero().equals("Femenino") ? R.drawable.female_symbol : R.drawable.male_symbol);
-        tvPacientCity.setText("Ciudad: " + pacienteView.getCiudad());
+        tvPacientCity.setText("Ciudad: " + pacienteView.getGenero());
 
         return viewPaciente;
+    }
+
+    private Bitmap bitmapConvert(byte[] foto) {
+        return BitmapFactory.decodeByteArray(foto, 0, foto.length);
     }
 }

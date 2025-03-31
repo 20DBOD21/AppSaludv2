@@ -15,7 +15,7 @@ import Models.Paciente;
 
 public class EntryActivity extends AppCompatActivity {
 
-    public static ArrayList<Paciente> listaPacientes = new ArrayList<>();
+    //public static ArrayList<Paciente> listaPacientes = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +55,11 @@ public class EntryActivity extends AppCompatActivity {
 
         if (item.getItemId() == R.id.itemListar) {
             intent = new Intent(EntryActivity.this, ListingActivity.class);
+            startActivity(intent);
+        }
+
+        if (item.getItemId() == R.id.itemListaLLamadas) {
+            intent = new Intent(EntryActivity.this, CallingActivity.class);
             startActivity(intent);
         }
 

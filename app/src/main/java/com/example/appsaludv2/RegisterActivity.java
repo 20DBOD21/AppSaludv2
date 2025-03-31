@@ -1,7 +1,7 @@
 package com.example.appsaludv2;
 
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -18,6 +18,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+
+import DataAccess.DAOPaciente;
 import Models.Paciente;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -31,7 +35,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText etPeso;
     private EditText etAltura;
     private ImageView ivFoto;
-    private Uri imgSeleccionada;
+    private byte[] imgSeleccionada;
     private final String[] ciudades = {
             "Seleccionar una Ciudad",
             "Cajamarca",
@@ -131,10 +135,13 @@ public class RegisterActivity extends AppCompatActivity {
         String dni = String.valueOf(etDni.getText());
         double peso = Double.parseDouble(etPeso.getText().toString().trim());
         double altura = Double.parseDouble(etAltura.getText().toString().trim());
-        Uri foto = imgSeleccionada;
+        byte[] foto = imgSeleccionada;
 
         Paciente paciente = new Paciente(nombres, apellidos, genero, edad, ciudad, dni, peso, altura, foto);
-        EntryActivity.listaPacientes.add(paciente);
+        //EntryActivity.listaPacientes.add(paciente);
+
+        DAOPaciente daoPaciente = new DAOPaciente();
+        daoPaciente.Agregar(this, paciente);
         Toast.makeText(getApplicationContext(), paciente.toString(), Toast.LENGTH_LONG).show();
     }
 
@@ -175,7 +182,7 @@ public class RegisterActivity extends AppCompatActivity {
             etAltura.setError("Altura del paciente Obligatorio");
             etAltura.requestFocus();
             return false;
-        } else if (imgSeleccionada == null || imgSeleccionada.toString().isEmpty()) {
+        } else if (imgSeleccionada == null) {
             Toast.makeText(getApplicationContext(), "Debe seleccionar una Foto", Toast.LENGTH_LONG).show();
             ivFoto.requestFocus();
             return false;
@@ -194,8 +201,8 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private String obtenerGenero() {
-        int idGenero =rgGenero.getCheckedRadioButtonId();
-        return idGenero == R.id.rbFemenino ? "Femenino" : idGenero == R.id.rbMasculino ? "Masculino" : "";
+        int idGenero = rgGenero.getCheckedRadioButtonId();
+        return idGenero == R.id.rbFemenino ? "Femenino" : "Masculino";
     }
 
     private void seleccionarFoto() {
@@ -209,8 +216,14 @@ public class RegisterActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 100 && resultCode == RESULT_OK) {
             if (data != null && data.getData() != null) {
-                imgSeleccionada = data.getData();
-                ivFoto.setImageURI(imgSeleccionada);
+                Uri fotoSubido = data.getData();
+                ivFoto.setImageURI(fotoSubido);
+                ivFoto.buildDrawingCache();
+
+                Bitmap bitmap = ivFoto.getDrawingCache();
+                ByteArrayOutputStream bmFlujo = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 0, bmFlujo);
+                imgSeleccionada = bmFlujo.toByteArray();
             } else {
                 Toast.makeText(this, "No se seleccionó ninguna imagen", Toast.LENGTH_SHORT).show();
             }
